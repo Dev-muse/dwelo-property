@@ -27,7 +27,7 @@ const Hero = () => {
                   type="text"
                   id="location"
                   placeholder="Enter Location (City, State, Zip, etc"
-                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-emerald-500"
                 />
               </div>
               <div className="w-full md:w-2/5 md:pl-2">
@@ -36,7 +36,7 @@ const Hero = () => {
                 </label>
                 <select
                   id="property-type"
-                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-emerald-500"
                 >
                   <option value="All">All</option>
                   <option value="Apartment">Apartment</option>

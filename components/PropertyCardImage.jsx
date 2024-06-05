@@ -22,7 +22,7 @@ const PropertyCardImage = ({ propertyImages }) => {
       alt=""
       sizes="100vw"
       width={0}
-      height={0}
+      height={200}
       className="w-full h-auto rounded-t-xl"
     />
   );
