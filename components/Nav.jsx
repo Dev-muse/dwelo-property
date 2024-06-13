@@ -39,15 +39,17 @@ export default function Nav() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
+                  {/* logo */}
                   <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
-                    alt="Your Company"
+                    className="block h-48 w-auto lg:hidden"
+                    src="/logo.svg"
+                    alt="Dwelo logo"
                   />
+                  {/* logo */}
                   <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
-                    alt="Your Company"
+                    className="hidden h-48 w-auto lg:block"
+                    src="/logo.svg"
+                    alt="Dwelo logo"
                   />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
@@ -91,10 +93,10 @@ export default function Nav() {
                   <div className="flex-shrink-0">
                     <button
                       type="button"
-                      className="relative inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                      className="divide-x-2  divide-white relative inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                     >
                       <FaGoogle className="-ml-1 mr-2 h-5 w-5" />
-                      <span>Login or Register</span>
+                      <span className="">&nbsp;&nbsp;Login or Register</span>
                     </button>
                   </div>
                 )}

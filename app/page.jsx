@@ -4,7 +4,7 @@ import InfoBoxes from "@/components/InfoBoxes";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
       <Hero />
@@ -12,4 +12,6 @@ export default function Home() {
       <HomeProperties />
     </div>
   );
-}
+};
+
+export default Home;

@@ -9,11 +9,7 @@ const Footer = () => {
     <footer className="bg-gray-50 py-4 mt-24">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
         <div className="mb-4 md:mb-0 ">
-          <img
-            src="https://tailwindui.com/img/logos/mark.svg?color=emerald&shade=600"
-            alt="Logo"
-            className="h-8 w-auto"
-          />
+          <img src="/logo.svg" alt="Dwelo logo" className="h-48 w-auto" />
         </div>
         <div className="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0">
           <ul className="flex space-x-4">
