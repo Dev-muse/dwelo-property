@@ -29,25 +29,25 @@ const PropertyCard = ({ property }) => {
           <div className="text-gray-600">{type}</div>
           <h3 className="text-xl font-bold">{name}</h3>
         </div>
-        <h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-emerald-500 font-bold text-right md:text-center lg:text-right">
+        <h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-primary font-bold text-right md:text-center lg:text-right">
           ${showRate()}
         </h3>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-gray-500 mb-4">
           <p className="flex items-center flex-wrap">
-            <FaBed className="inline mr-1 text-emerald-700" /> {beds}&nbsp;
+            <FaBed className="inline mr-1 text-primary" /> {beds}&nbsp;
             <span className="md:hidden lg:inline">
               {beds > 1 ? "Beds" : "Bed"}
             </span>
           </p>
           <p className="flex items-center flex-wrap">
-            <FaBath className="inline mr-1 text-emerald-700" /> {baths}&nbsp;
+            <FaBath className="inline mr-1 text-primary" /> {baths}&nbsp;
             <span className="md:hidden lg:inline">
               {baths > 1 ? "Baths" : "Bath"}
             </span>
           </p>
           <p className="flex items-center flex-wrap">
-            <TbRulerMeasure className="inline mr-1 text-emerald-700" />
+            <TbRulerMeasure className="inline mr-1 text-primary" />
             {square_feet.toLocaleString()}{" "}
             <span className="md:hidden lg:inline">sqft</span>
           </p>
@@ -82,11 +82,11 @@ const PropertyCard = ({ property }) => {
         <div className="flex flex-col lg:flex-row justify-between mb-4">
           <div className="flex items-center justify-center gap-2 mb-4 lg:mb-0">
             <FaMapMarkerAlt className="inline mr-1" />
-            <span className="text-emerald-600"> {location.city}</span>
+            <span className="text-primary"> {location.city}</span>
           </div>
           <Link
             href={`/properties/${_id}`}
-            className="h-[36px] bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-md text-center text-sm"
+            className="h-[36px] bg-primary hover:opacity-80 text-white px-4 py-2 rounded-md text-center text-sm"
           >
             Details
           </Link>

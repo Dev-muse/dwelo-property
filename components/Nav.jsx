@@ -29,7 +29,7 @@ export default function Nav() {
               <div className="flex">
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -53,12 +53,12 @@ export default function Nav() {
                   />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  {/* Current: "border-emerald-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+                  {/* Current: "border-primary text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     href="/"
                     className={`${
                       path == "/"
-                        ? "inline-flex items-center border-b-2 border-emerald-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                        ? "inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-gray-900"
                         : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
                   >
@@ -68,7 +68,7 @@ export default function Nav() {
                     href="/properties"
                     className={`${
                       path == "/properties"
-                        ? "inline-flex items-center border-b-2 border-emerald-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                        ? "inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-gray-900"
                         : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
                   >
@@ -79,7 +79,7 @@ export default function Nav() {
                       href="/properties/add"
                       className={`${
                         path == "/properties/add"
-                          ? "inline-flex items-center border-b-2 border-emerald-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                          ? "inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-gray-900"
                           : "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                       }`}
                     >
@@ -93,7 +93,7 @@ export default function Nav() {
                   <div className="flex-shrink-0">
                     <button
                       type="button"
-                      className="divide-x-2  divide-white relative inline-flex items-center rounded-md border border-transparent bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                      className="divide-x-2  divide-white relative inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     >
                       <FaGoogle className="-ml-1 mr-2 h-5 w-5" />
                       <span className="">&nbsp;&nbsp;Login or Register</span>
@@ -132,7 +132,7 @@ export default function Nav() {
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
                       <div>
-                        <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                        <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           <Image
                             className="h-8 w-8 rounded-full"
@@ -202,11 +202,11 @@ export default function Nav() {
           {/* mobile menu */}
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {/* Current: "bg-emerald-50 border-emerald-500 text-emerald-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
+              {/* Current: "bg-emerald-50 border-primary text-emerald-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Link
                 className={`${
                   path == "/"
-                    ? "block border-l-4 border-emerald-500 bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
+                    ? "block border-l-4 border-primary bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
                     : "block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                 }`}
                 href={"/"}
@@ -218,7 +218,7 @@ export default function Nav() {
                 href={"/properties"}
                 className={`${
                   path == "/properties"
-                    ? "block border-l-4 border-emerald-500 bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
+                    ? "block border-l-4 border-primary bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
                     : "block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                 }`}
               >
@@ -230,7 +230,7 @@ export default function Nav() {
                   href={"/properties/add"}
                   className={`${
                     path == "/properties/add"
-                      ? "block border-l-4 border-emerald-500 bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
+                      ? "block border-l-4 border-primary bg-emerald-50 py-2 pl-3 pr-4 text-base font-medium text-emerald-700 sm:pl-5 sm:pr-6"
                       : "block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                   }`}
                 >
@@ -255,7 +255,7 @@ export default function Nav() {
                   <Link className="relative group ml-auto" href="/messages">
                     <button
                       type="button"
-                      className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                      className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
