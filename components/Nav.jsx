@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
@@ -9,17 +9,33 @@ import { FaGoogle } from "react-icons/fa6";
 import profileDefault from "@/assets/images/profile.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { signIn, signOut, getProviders, useSession } from "next-auth/react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Nav() {
+  // getting session data
+  const { data: session } = useSession();
+
+  const profileImage = session?.user?.image;
+
   const [showProfileMenu, setshowProfileMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [providers, setProviders] = useState(false);
 
   const path = usePathname();
-  console.log(path);
+
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+
+      setProviders(res);
+    };
+    setAuthProviders();
+  }, []);
+
+  console.log("profile image", profileImage);
   return (
     <Disclosure as="nav" className="bg-white shadow mb-0.5">
       {({ open }) => (
@@ -74,7 +90,7 @@ export default function Nav() {
                   >
                     Properties
                   </Link>
-                  {isLoggedIn && (
+                  {session && (
                     <Link
                       href="/properties/add"
                       className={`${
@@ -88,19 +104,28 @@ export default function Nav() {
                   )}
                 </div>
               </div>
+
+              {/* login button */}
               <div className="flex items-center">
-                {!isLoggedIn && (
+                {!session && (
                   <div className="flex-shrink-0">
-                    <button
-                      type="button"
-                      className="divide-x-2  divide-white relative inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                    >
-                      <FaGoogle className="-ml-1 mr-2 h-5 w-5" />
-                      <span className="">&nbsp;&nbsp;Login or Register</span>
-                    </button>
+                    {providers &&
+                      Object.values(providers).map((provider, index) => (
+                        <button
+                          key={index}
+                          onClick={() => signIn(provider.id)}
+                          type="button"
+                          className="divide-x-2  divide-white relative inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                        >
+                          <FaGoogle className="-ml-1 mr-2 h-5 w-5" />
+                          <span className="">
+                            &nbsp;&nbsp;Login or Register
+                          </span>
+                        </button>
+                      ))}
                   </div>
                 )}
-                {isLoggedIn && (
+                {session && (
                   <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                     <Link href="/messages" className="relative group">
                       <button
@@ -137,7 +162,9 @@ export default function Nav() {
                           <Image
                             className="h-8 w-8 rounded-full"
                             alt=""
-                            src={profileDefault}
+                            src={profileImage || profileDefault}
+                            width={40}
+                            height={40}
                           />
                         </Menu.Button>
                       </div>
@@ -154,7 +181,7 @@ export default function Nav() {
                           <Menu.Item>
                             {({ active }) => (
                               <a
-                                href="#"
+                                href="/profile"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
@@ -167,7 +194,7 @@ export default function Nav() {
                           <Menu.Item>
                             {({ active }) => (
                               <a
-                                href="#"
+                                href="/properties/saved"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
@@ -180,6 +207,7 @@ export default function Nav() {
                           <Menu.Item>
                             {({ active }) => (
                               <a
+                                onClick={() => signOut()}
                                 href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -225,7 +253,7 @@ export default function Nav() {
                 Properties
               </Link>
 
-              {isLoggedIn && (
+              {session && (
                 <Link
                   href={"/properties/add"}
                   className={`${
@@ -239,7 +267,7 @@ export default function Nav() {
               )}
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
-              {isLoggedIn && (
+              {session && (
                 <div className="flex items-center px-4 sm:px-6">
                   <div
                     className="flex-shrink-0 cursor-pointer"
@@ -248,7 +276,9 @@ export default function Nav() {
                     <Image
                       className="h-10 w-10 rounded-full"
                       alt="profile image"
-                      src={profileDefault}
+                      src={profileImage || profileDefault}
+                      width={40}
+                      height={40}
                     />
                   </div>
 
@@ -271,14 +301,14 @@ export default function Nav() {
                 <div className="mt-3 space-y-1">
                   <Disclosure.Button
                     as="a"
-                    href="#"
+                    href="/profile"
                     className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                   >
                     Your Profile
                   </Disclosure.Button>
                   <Disclosure.Button
                     as="a"
-                    href="#"
+                    href="/properties/saved"
                     className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                   >
                     Saved Properties
@@ -287,6 +317,7 @@ export default function Nav() {
                     as="a"
                     href="#"
                     className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
+                    onClick={() => signOut()}
                   >
                     Sign out
                   </Disclosure.Button>

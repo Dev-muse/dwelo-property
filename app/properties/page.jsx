@@ -9,7 +9,7 @@ const PropertiesPage = async () => {
 
   properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const PropertyList = properties.map((property) => (
-    <PropertyCard property={property} />
+    <PropertyCard key={property.id} property={property} />
   ));
   return (
     <section className="px-4 py-6">
