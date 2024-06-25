@@ -2,11 +2,13 @@
 
 import PropertyDetails from "@/components/PropertyDetails";
 import PropertyHeader from "@/components/PropertyHeader";
+import PropertyImages from "@/components/PropertyImages";
 import Spinner from "@/components/Spinner";
 import { fetchProperty } from "@/utils/requests";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import { IoMdArrowBack } from "react-icons/io";
 
 const PropertyPage = () => {
@@ -161,6 +163,7 @@ const PropertyPage = () => {
               </div>
             </div>
           </section>
+          <PropertyImages images={Property.images} />
         </>
       )}
     </>

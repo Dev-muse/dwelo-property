@@ -35,7 +35,6 @@ export default function Nav() {
     setAuthProviders();
   }, []);
 
-  console.log("profile image", profileImage);
   return (
     <Disclosure as="nav" className="bg-white shadow mb-0.5">
       {({ open }) => (
