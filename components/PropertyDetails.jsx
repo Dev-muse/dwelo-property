@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import PropertyMap from "./PropertyMap";
 
 const PropertyDetails = ({ Property }) => {
   console.log("property", Property);
@@ -38,18 +39,19 @@ const PropertyDetails = ({ Property }) => {
           Rates &amp; Options
         </h3>
         <div className="flex  flex-row justify-around">
-          <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-            <div className="text-gray-500 mr-2 font-bold">Nightly</div>
-            <div className="text-2xl font-bold text-primary">
-              {rates.nightly ? (
-                `$${rates.nightly.toLocaleString()}`
-              ) : (
-                <FaTimes className="  text-red-700" />
-              )}
+          <div className="flex flex-col md:flex-row items-center justify-start md:justify-between space-x-4 text-blue-700">
+            <div className="flex items-center justify-center mb-4  md:border-b-0 pb-4 md:pb-0">
+              <div className="text-gray-500 mr-2 font-bold">Nightly</div>
+              <div className="text-2xl font-bold text-primary">
+                {rates.nightly ? (
+                  `$${rates.nightly.toLocaleString()}`
+                ) : (
+                  <FaTimes className="  text-red-700" />
+                )}
+              </div>
             </div>
-          </div>
-          <div className="flex items-end justify-between space-x-4 text-blue-700">
-            <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
+
+            <div className="flex items-center justify-center mb-4  md:border-b-0 pb-4 md:pb-0">
               <div className="text-gray-500 mr-2 font-bold">Weekly:</div>
               <div className="text-2xl font-bold text-primary">
                 {rates.weekly ? (
@@ -118,7 +120,7 @@ const PropertyDetails = ({ Property }) => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-        <div id="map"></div>
+        <PropertyMap Property={Property} />
       </div>
     </main>
   );
