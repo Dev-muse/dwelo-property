@@ -16,6 +16,9 @@
 # production
 /build
 
+# theme files
+/_theme_files
+
 # misc
 .DS_Store
 *.pem

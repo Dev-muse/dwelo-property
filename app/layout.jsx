@@ -13,7 +13,7 @@ export const metadata = {
   title: "Dwelo - Bid to Dwell Well",
   description:
     "Discover your dream home and bid with confidence on Dwelo. Explore property listings, place bids, and find your perfect dwelling with ease.",
-  keywords: "rental,find your dream property, homes",
+  keywords: "rental,property,real estate,find your dream property, homes",
 };
 
 export default function RootLayout({ children }) {

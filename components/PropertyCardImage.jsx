@@ -16,9 +16,11 @@ const PropertyCardImage = ({ propertyImages }) => {
     return () => clearInterval(interval); // Clean up the interval on component unmount
   }, [propertyImages.length]);
 
+  console.log('PropertyCardImage',propertyImages[currentImageIndex])
+    
   return (
     <Image
-      src={propertyImages[currentImageIndex]}
+      src={`/images/properties/${propertyImages[currentImageIndex]}`}
       alt=""
       sizes="100vw"
       width={0}

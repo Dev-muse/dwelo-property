@@ -8,9 +8,9 @@ import {
 import { FaXmark } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import PropertyMap from "./PropertyMap";
+import { TbRulerMeasure } from "react-icons/tb";
 
 const PropertyDetails = ({ Property }) => {
-  console.log("property", Property);
   const {
     type,
     name,
@@ -97,7 +97,8 @@ const PropertyDetails = ({ Property }) => {
           </p>
 
           <p className="flex items-center align-baseline">
-            <FaRulerCombined className="mr-2 text-primary" />
+            <TbRulerMeasure className="mr-2 text-primary" />
+
             {square_feet.toLocaleString()}
             <span className="hidden sm:inline ml-1"> sqft</span>
           </p>

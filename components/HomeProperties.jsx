@@ -2,15 +2,26 @@ import React from "react";
 
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
-import { fetchProperties } from "@/utils/requests";
+// import { fetchProperties } from "@/utils/requests";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
 
-const properties = await fetchProperties();
-properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-const HomeProperties = () => {
-  const recentProperties = properties
-    .sort(() => Math.random() - Math.random())
-    .slice(0, 3);
+// const properties = await fetchProperties();
+// properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+const HomeProperties =async () => {
+
+  
+    await connectDB();
+    const recentProperties = await Property.find({}).sort({createdAt:-1}).limit(3).lean();
+
+  // const recentProperties = properties
+  //   .sort(() => Math.random() - Math.random())
+  //   .slice(0, 3);
+
+
+
   return (
     <section>
       <section className="px-4 py-6">

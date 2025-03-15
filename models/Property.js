@@ -47,26 +47,14 @@ const PropertySchema = new Schema(
     },
     amenities: [{ type: String }],
     rates: {
-      nightly: {
-        type: Number,
-      },
-      weekly: {
-        type: Number,
-      },
-      monthly: {
-        type: Number,
-      },
+      nightly: Number,
+      weekly: Number,
+      monthly:Number,
     },
     seller_info: {
-      name: {
-        type: String,
-      },
-      email: {
-        type: String,
-      },
-      phone: {
-        type: String,
-      },
+      name: String,
+      email: String,
+      phone: String,
     },
     images: [
       {

@@ -1,12 +1,14 @@
-import Link from "next/link";
-import React from "react";
 // import properties from "@/properties.json";
 import PropertyCard from "@/components/PropertyCard";
-import { fetchProperties } from "@/utils/requests";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
+// import { fetchProperties } from "@/utils/requests";
 
 const PropertiesPage = async () => {
-  const properties = await fetchProperties();
-
+  // const properties = await fetchProperties();
+  await connectDB();
+  const properties = await Property.find({}).lean();
+ 
   properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const PropertyList = properties.map((property) => (
     <PropertyCard key={property.id} property={property} />
