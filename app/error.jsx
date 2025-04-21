@@ -9,7 +9,7 @@ const ErrorPage = ({ error }) => {
       <div className="text-center">
         <h1 className="text-9xl font-black text-gray-200">Error</h1>
 
-        <IoWarningOutline className="text-5xl text-center text-red-400 mx-auto" />
+        <FaExclamationCircle className="text-5xl text-center text-red-400 mx-auto" />
         <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Uh-oh!
         </p>

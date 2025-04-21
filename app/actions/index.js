@@ -5,6 +5,8 @@ import Property from "@/models/Property";
 import connectDB from "@/config/database";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import cloudinary from "@/config/cloudinary";
+
 
 export async function addProperty(formData) {
   await connectDB();
@@ -27,7 +29,7 @@ export async function addProperty(formData) {
   const images = formData
     .getAll("images")
     .filter((image) => image.name !== "")
-    .map((image) => image.name);
+    
 
   const propertyData = {
     owner: userId,
@@ -54,8 +56,31 @@ export async function addProperty(formData) {
       email: helper("seller_info.email"),
       phone: helper("seller_info.phone"),
     },
-    images,
+ 
   };
+
+
+  const imageUrls = [];
+
+  for(let imageFile of images){
+    const imageBuffer = await imageFile.arrayBuffer()
+
+    const imageArray = Array.from(new Uint8Array(imageBuffer))
+    const imageData = Buffer.from(imageArray)
+
+    // convert to base 64: 
+    const imageBase64 =  imageData.toString('base64')
+
+    // request to cloudinary 
+    const response = await cloudinary.uploader.upload(`data:image/png;base64,${imageBase64}`,{
+      folder:'Dwelo'
+    })
+
+    imageUrls.push(response.secure_url);
+    
+  }
+
+  propertyData.images = imageUrls;
 
 
  const newEntry = new Property(propertyData)
@@ -64,4 +89,17 @@ export async function addProperty(formData) {
  revalidatePath('/','layout')
 
  redirect(`/properties/${newEntry._id}`)
+}
+
+
+
+
+export async function getProperty(id) {
+      await connectDB();
+      const property = await Property.findById(id);
+    if(!property){
+      throw new Error('Property not found')
+    }
+      return property
+  
 }
