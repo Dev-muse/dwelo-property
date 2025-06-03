@@ -20,7 +20,7 @@ const PropertyCardImage = ({ propertyImages }) => {
     
   return (
     <Image
-      src={`/images/properties/${propertyImages[currentImageIndex]}`}
+      src={`${propertyImages[currentImageIndex]}`}
       alt=""
       sizes="100vw"
       width={0}

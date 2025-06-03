@@ -48,10 +48,10 @@ const Navbar = () => {
           <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
             {/* <!-- Logo --> */}
             <Link href="/" className="flex flex-shrink-0 items-center ">
-              <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
+              <Image className="h-10 w-auto" src={logo} alt="dwelo property" />
 
               <span className="hidden md:block text-white text-2xl font-bold ml-2">
-                PropertyPulse
+                Dwelo
               </span>
             </Link>
             {/* <!-- Desktop Menu Hidden below md screens --> */}

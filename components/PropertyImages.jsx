@@ -15,7 +15,7 @@ const PropertyImages = ({ images }) => {
           />
         ) : (
           <div className="grid grid-cols-2 gap-4">
-            {images.map((image, index) => (
+            {images?.map((image, index) => (
               <div
                 className={`${
                   images.length === 3 && index === 2
@@ -25,7 +25,7 @@ const PropertyImages = ({ images }) => {
                 key={index}
               >
                 <Image
-                  src={`/images/properties/${image}`}
+                  src={`${image}`}
                   alt=""
                   className="w-full h-[400px] object-cover rounded-lg"
                   width={0}

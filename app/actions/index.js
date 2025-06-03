@@ -103,3 +103,17 @@ export async function getProperty(id) {
       return property
   
 }
+
+
+export async function deleteProperty(propertyId){
+  const sessionUser = await getSessionUser()
+
+  if(!sessionUser || !sessionUser.userId){
+    throw new Error('User ID is required')
+  }
+  const {userId} = sessionUser
+  
+  const property = await Property.findById(propertyId).lean()
+
+  if(!property) throw new Error('Property not found!')
+}

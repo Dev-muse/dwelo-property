@@ -1,80 +1,29 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
+
 import profileDefault from "@/assets/images/profile.png";
-import Spinner from "@/components/Spinner";
-import { toast } from "react-toastify";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
+import { getSessionUser } from "@/utils/getSessionUser";
+import ProfileProperties from "@/components/ProfileProperties";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
-const Profile = () => {
-  const { data: session } = useSession();
-  const profileImage = session?.user?.image;
-  const profileName = session?.user?.name;
-  const profileEmail = session?.user?.email;
+const Profile = async () => {
+  await connectDB();
+  const sessionUser = await getSessionUser();
 
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { userId } = sessionUser;
 
-  const handleDeleteProperty = async (propertyId) => {
-    const confirm = window.confirm(
-      "Are you sure you wish to delete this listing?"
-    );
-    if (!confirm) return;
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
 
-    try {
-      const res = await fetch(`/api/properties/${propertyId}`, {
-        method: "DELETE",
-      });
-      if (res.status == 200) {
-        // UPDATE PROPERTY LIST
-        const updatedProperties = properties.filter(
-          (property) => property._id !== propertyId
-        );
-        setProperties(updatedProperties);
-        toast.success("Property Deleted!", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        toast.error("property could not be deleted");
-      }
-    } catch (error) {
-      toast.error("Failed to delete property");
-      console.log("deleting property error:", error.message);
-    }
-  };
+  const profileImage = sessionUser?.user?.image;
+  const profileName = sessionUser?.user?.name;
+  const profileEmail = sessionUser?.user?.email;
 
-  useEffect(() => {
-    const fetchUserProperties = async (userId) => {
-      if (!userId) {
-        return;
-      }
-
-      try {
-        const res = await fetch(`api/properties/user/${userId}`);
-        if (res.status == 200) {
-          const data = await res.json();
-          setProperties(data);
-        }
-      } catch (error) {
-        console.log("error", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // call function to get data only if session is available
-    if (session?.user?.id) {
-      fetchUserProperties(session?.user?.id);
-    }
-  }, [session]);
+  const propertiesDocs = await Property.find({ owner: userId }).lean();
+  const properties = propertiesDocs.map(convertToSerializableObject);
+  // console.log("PROFILE PAGE" ,properties);
 
   return (
     <section className="bg-primary">
@@ -107,52 +56,7 @@ const Profile = () => {
               <h2 className="text-xl font-bold mb-4 text-center md:text-left">
                 Your Listings:
               </h2>
-              {!loading && properties.length === 0 && (
-                <p>You have no property listings</p>
-              )}
-
-              {loading ? (
-                <Spinner loading={loading} />
-              ) : (
-                properties.map((property) => {
-                  const { street, city, state, zipcode } = property.location;
-                  return (
-                    <div className="mb-10" key={property._id}>
-                      <Link href={`/properties/${property._id}`}>
-                        <Image
-                          className="h-32 w-full rounded-md object-cover"
-                          src={property.images[0]}
-                          alt={property.name}
-                          width={500}
-                          height={100}
-                          priority
-                        />
-                      </Link>
-                      <div className="mt-2">
-                        <p className="text-lg font-semibold">{property.name}</p>
-                        <p className="text-gray-600">
-                          Address: {`${street} ${city} ${state} ${zipcode}`}
-                        </p>
-                      </div>
-                      <div className="mt-2">
-                        <Link
-                          href={`/properties/${property._id}/edit`}
-                          className="bg-emerald-800 text-white px-3 py-3 rounded-md mr-2 hover:bg-primary"
-                        >
-                          Edit
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteProperty(property._id)}
-                          className="bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-600"
-                          type="button"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
+              <ProfileProperties properties={properties} />
             </div>
           </div>
         </div>

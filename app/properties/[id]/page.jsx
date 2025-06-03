@@ -1,4 +1,3 @@
-"use client";
 
 import BookmarkButton from "@/components/BookmarkButton";
 import PropertyContactForm from "@/components/PropertyContactForm";
@@ -6,46 +5,26 @@ import PropertyDetails from "@/components/PropertyDetails";
 import PropertyHeader from "@/components/PropertyHeader";
 import PropertyImages from "@/components/PropertyImages";
 import ShareButtons from "@/components/ShareButtons";
-import Spinner from "@/components/Spinner";
-import { fetchProperty } from "@/utils/requests";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { MdArrowBack } from "react-icons/md";
 
-const PropertyPage = () => {
-  const [Property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { id } = useParams();
+const PropertyPage = async({params}) => {
+  await connectDB()
+  const propertyItem = await Property.findById(params.id).lean();
 
-  useEffect(() => {
-    const getData = async () => {
-      if (!id) return;
-      try {
-        const data = await fetchProperty(id);
-        setProperty(data);
-      } catch (error) {
-        console.log("error fetching property", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (Property === null) {
-      getData();
-    }
-  }, [Property, id]);
-
-  if (!Property && !loading) {
+  const property = convertToSerializableObject(propertyItem)
+   
+  const propertyImage = property.images;
+   if (!property ) {
     return <h1 className="text-center mt-10 font-bold">Property not found</h1>;
   }
 
   return (
     <>
-      {loading && <Spinner loading={loading} />}
-      {!loading && Property && (
-        <>
-          <PropertyHeader image={Property.images[0]} />
+          <PropertyHeader image={property.images[0]} />
           {/* back btn */}
           <section>
             <div className="container m-auto py-6 px-6">
@@ -63,21 +42,19 @@ const PropertyPage = () => {
           <section className="bg-primary opacity-80">
             <div className="container m-auto py-10 px-6">
               <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
-                <PropertyDetails Property={Property} />
+                <PropertyDetails Property={property} />
                 {/* aside */}
                 <aside className="space-y-4">
-                  <BookmarkButton Property={Property} />
-                  <ShareButtons Property={Property} />
+                  <BookmarkButton Property={property} />
+                  <ShareButtons Property={property} />
                   {/* contact form */}
-                  <PropertyContactForm Property={Property} />
+                  <PropertyContactForm Property={property} />
                 </aside>
               </div>
             </div>
           </section>
-          <PropertyImages images={Property.images} />
+          <PropertyImages images={propertyImage} />
         </>
-      )}
-    </>
   );
 };
 

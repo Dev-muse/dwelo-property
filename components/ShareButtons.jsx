@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import {
   TwitterShareButton,
@@ -11,7 +13,7 @@ import {
 } from "react-share";
 
 const ShareButtons = ({ Property }) => {
-  const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/properties/${Property._id}`;
+   const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/properties/${Property._id}`;
   return (
     <div>
       <h3 className="text-xl text-white font-bold text-center pt-2">
