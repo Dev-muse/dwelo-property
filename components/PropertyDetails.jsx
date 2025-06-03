@@ -1,11 +1,9 @@
 import {
   FaBed,
   FaBath,
-  FaRulerCombined,
   FaCheck,
   FaTimes,
 } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import PropertyMap from "./PropertyMap";
 import { TbRulerMeasure } from "react-icons/tb";

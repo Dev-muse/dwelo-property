@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 
-
 export async function addProperty(formData) {
   await connectDB();
   const sessionUser = await getSessionUser();
@@ -26,10 +25,7 @@ export async function addProperty(formData) {
   const amenities = formData.getAll("amenities");
 
   // multiple images , get array of objects, convert to array of file image names
-  const images = formData
-    .getAll("images")
-    .filter((image) => image.name !== "")
-    
+  const images = formData.getAll("images").filter((image) => image.name !== "");
 
   const propertyData = {
     owner: userId,
@@ -56,64 +52,81 @@ export async function addProperty(formData) {
       email: helper("seller_info.email"),
       phone: helper("seller_info.phone"),
     },
- 
   };
-
 
   const imageUrls = [];
 
-  for(let imageFile of images){
-    const imageBuffer = await imageFile.arrayBuffer()
+  for (let imageFile of images) {
+    const imageBuffer = await imageFile.arrayBuffer();
 
-    const imageArray = Array.from(new Uint8Array(imageBuffer))
-    const imageData = Buffer.from(imageArray)
+    const imageArray = Array.from(new Uint8Array(imageBuffer));
+    const imageData = Buffer.from(imageArray);
 
-    // convert to base 64: 
-    const imageBase64 =  imageData.toString('base64')
+    // convert to base 64:
+    const imageBase64 = imageData.toString("base64");
 
-    // request to cloudinary 
-    const response = await cloudinary.uploader.upload(`data:image/png;base64,${imageBase64}`,{
-      folder:'Dwelo'
-    })
+    // request to cloudinary
+    const response = await cloudinary.uploader.upload(
+      `data:image/png;base64,${imageBase64}`,
+      {
+        folder: "Dwelo",
+      }
+    );
 
     imageUrls.push(response.secure_url);
-    
   }
 
   propertyData.images = imageUrls;
 
+  const newEntry = new Property(propertyData);
+  await newEntry.save();
 
- const newEntry = new Property(propertyData)
- await newEntry.save()
+  revalidatePath("/", "layout");
 
- revalidatePath('/','layout')
-
- redirect(`/properties/${newEntry._id}`)
+  redirect(`/properties/${newEntry._id}`);
 }
-
-
-
 
 export async function getProperty(id) {
-      await connectDB();
-      const property = await Property.findById(id);
-    if(!property){
-      throw new Error('Property not found')
-    }
-      return property
-  
+  await connectDB();
+  const property = await Property.findById(id);
+  if (!property) {
+    throw new Error("Property not found");
+  }
+  return property;
 }
 
+export async function deleteProperty(propertyId) {
+  const sessionUser = await getSessionUser();
 
-export async function deleteProperty(propertyId){
-  const sessionUser = await getSessionUser()
-
-  if(!sessionUser || !sessionUser.userId){
-    throw new Error('User ID is required')
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error("User ID is required");
   }
-  const {userId} = sessionUser
-  
-  const property = await Property.findById(propertyId).lean()
+  const { userId } = sessionUser;
 
-  if(!property) throw new Error('Property not found!')
+  const property = await Property.findById(propertyId);
+
+  if (!property) throw new Error("Property not found!");
+
+  // verify owner before deleting
+
+  if (property.owner.toString() !== userId) {
+    throw new Error("Unauthorized user, cannot delete listing");
+  }
+   // extract public ids from img strings
+
+  const publicIds = property.images.map((imageUrl) => {
+    const parts = imageUrl.split("/");
+    return parts.at(-1).split(".").at(0);
+  });
+
+  // delete images from cloudinary
+  if (publicIds.length > 0) {
+    for (let publicId of publicIds) {
+      await cloudinary.uploader.destroy("Dwelo/" + publicId);
+    }
+  }
+
+  await property.deleteOne()
+
+ revalidatePath('/', 'layout')
 }

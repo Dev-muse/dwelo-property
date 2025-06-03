@@ -1,11 +1,22 @@
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link'; 
-import Image from 'next/image';
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { deleteProperty } from "@/app/actions";
 
 const ProfileProperties = ({ properties: initialProperties }) => {
   const [properties, setProperties] = useState(initialProperties);
 
+  const handleDeleteProperty = async (propertyId) => {
+    const confirmAction = window.confirm("Are you sure you want to do this?");
+    if (!confirmAction) return;
+
+    await deleteProperty(propertyId);
+    
+    // update state 
+    const updatedProperties = properties.filter(property=>property._id!==propertyId)
+    setProperties(updatedProperties)
+  };
 
   if (properties.length === 0) {
     return <p>You have no property listings</p>;
