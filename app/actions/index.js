@@ -6,6 +6,7 @@ import connectDB from "@/config/database";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
+import Message from "@/models/Message";
 
 export async function addProperty(formData) {
   await connectDB();
@@ -112,7 +113,7 @@ export async function deleteProperty(propertyId) {
   if (property.owner.toString() !== userId) {
     throw new Error("Unauthorized user, cannot delete listing");
   }
-   // extract public ids from img strings
+  // extract public ids from img strings
 
   const publicIds = property.images.map((imageUrl) => {
     const parts = imageUrl.split("/");
@@ -126,14 +127,13 @@ export async function deleteProperty(propertyId) {
     }
   }
 
-  await property.deleteOne()
+  await property.deleteOne();
 
- revalidatePath('/', 'layout')
+  revalidatePath("/", "layout");
 }
 
-
-export async function updateProperty(propertyId,formData) {
-  'use server'
+export async function updateProperty(propertyId, formData) {
+  "use server";
   await connectDB();
 
   const sessionUser = await getSessionUser();
@@ -146,18 +146,16 @@ export async function updateProperty(propertyId,formData) {
   const existingProperty = await Property.findById(propertyId);
 
   //verify ownership
-  if(existingProperty.owner.toString()!==userId){
-    throw new Error('Unauthorised user: not owner of property!')
+  if (existingProperty.owner.toString() !== userId) {
+    throw new Error("Unauthorised user: not owner of property!");
   }
 
- const helper = (name) => {
+  const helper = (name) => {
     return formData.get(name);
   };
 
   //all selection of amenities in an array
   const amenities = formData.getAll("amenities");
-
-  
 
   const propertyData = {
     owner: userId,
@@ -186,8 +184,39 @@ export async function updateProperty(propertyId,formData) {
     },
   };
 
-  const updatedProperty = await Property.findByIdAndUpdate(propertyId,propertyData)
-  revalidatePath('/','layout')
-  redirect(`/properties/${updatedProperty._id}`)
+  const updatedProperty = await Property.findByIdAndUpdate(
+    propertyId,
+    propertyData
+  );
+  revalidatePath("/", "layout");
+  redirect(`/properties/${updatedProperty._id}`);
+}
 
+// ===============messages===========================================
+
+export async function addMessage(formData) {
+  await connectDB();
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error("User ID is required");
+  }
+  const recipient = formData.get("recipient");
+  const { userId } = sessionUser;
+  if (userId == recipient) {
+    return { error: "You cannot message yourself" };
+  }
+
+  const newMessage = new Message({
+    sender: userId,
+    recipient,
+    property: formData.get("property"),
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    body: formData.get("body"),
+  });
+
+  await newMessage.save();
+  return { submitted: true };
 }
