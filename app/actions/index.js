@@ -133,7 +133,6 @@ export async function deleteProperty(propertyId) {
 }
 
 export async function updateProperty(propertyId, formData) {
-  "use server";
   await connectDB();
 
   const sessionUser = await getSessionUser();
@@ -194,7 +193,7 @@ export async function updateProperty(propertyId, formData) {
 
 // ===============messages===========================================
 
-export async function addMessage(formData) {
+export async function addMessage(prevState, formData) {
   await connectDB();
   const sessionUser = await getSessionUser();
 
