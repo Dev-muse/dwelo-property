@@ -256,14 +256,31 @@ export async function deleteMessage(messageId) {
   }
   const { userId } = sessionUser;
 
-  const message = await Message.findById(messageId)
+  const message = await Message.findById(messageId);
 
-  if(message.recipient.toString()!== userId){
-    throw new Error('Unauthorised user!')
+  if (message.recipient.toString() !== userId) {
+    throw new Error("Unauthorised user!");
   }
 
-  await message.deleteOne()
-
+  await message.deleteOne();
 
   revalidatePath("/messages");
+}
+
+export async function getUnreadMessageCount() {
+  await connectDB();
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error("User ID is required");
+  }
+
+  const { userId } = sessionUser;
+
+  const count = await Message.countDocuments({
+    recipient: userId,
+    read: false,
+  });
+
+  return count; 
 }

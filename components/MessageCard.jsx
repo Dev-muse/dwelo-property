@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteMessage, markMessageAsRead } from "@/app/actions";
+import { useGlobalContext } from "@/context/Globalcontext";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -14,17 +15,18 @@ const MessageCard = ({ message }) => {
     setCreated(new Date(message.createdAt).toLocaleString());
   }, [message.createdAt]);
 
+  const { setUnreadCount } = useGlobalContext();
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message._id);
     setIsRead(read);
-
+    setUnreadCount((prevCount) => (read ? prevCount - 1 : prevCount + 1));
     toast.success(`Marked as ${read ? "read" : "new"}`);
   };
 
   const handleDeleteClick = async () => {
     await deleteMessage(message._id);
     setIsDeleted(true);
-
+    setUnreadCount((prevCount) => (isRead ? prevCount : prevCount - 1));
     toast.success(`Message Deleted`);
   };
 
