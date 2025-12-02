@@ -219,3 +219,51 @@ export async function addMessage(prevState, formData) {
   await newMessage.save();
   return { submitted: true };
 }
+export async function markMessageAsRead(messageId) {
+  await connectDB();
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error("User ID is required");
+  }
+
+  const { userId } = sessionUser;
+
+  const message = await Message.findById(messageId);
+
+  if (!message) {
+    throw new Error("Message not found!");
+  }
+
+  // verify ownership
+  if (message.recipient.toString() !== userId) {
+    throw new Error("Unauthorized user!");
+  }
+
+  message.read = !message.read;
+
+  revalidatePath("/messages");
+
+  await message.save();
+  return message.read;
+}
+
+export async function deleteMessage(messageId) {
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error("User ID is required");
+  }
+  const { userId } = sessionUser;
+
+  const message = await Message.findById(messageId)
+
+  if(message.recipient.toString()!== userId){
+    throw new Error('Unauthorised user!')
+  }
+
+  await message.deleteOne()
+
+
+  revalidatePath("/messages");
+}

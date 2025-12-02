@@ -1,4 +1,5 @@
-import Messages from "@/components/Messages";
+import MessageCard from "@/components/MessageCard";
+import Messages from "@/components/MessageCard";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { convertToSerializableObject } from "@/utils/convertToObject";
@@ -6,10 +7,23 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import React from "react";
 
 const MessagesPage = async () => {
-  connectDB();
+  await connectDB();
   const sessionUser = await getSessionUser();
+
   const { userId } = sessionUser;
 
+  if (!sessionUser || !userId) {
+    return (
+      <section className="bg-primary h-screen">
+        <div className="container text-center m-auto py-24 max-w-6xl">
+          <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+            <h1 className="text-3xl font-bold mb-4">Your Messages</h1>
+            <p className="text-red-600">Please log in to view messages</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
   const readMessages = await Message.find({
     recipient: userId,
     read: true,
@@ -36,15 +50,15 @@ const MessagesPage = async () => {
 
   return (
     <section className="bg-primary h-screen">
-      <div className="container text-center m-auto py-24 max-w-6xl">
+      <div className="container m-auto py-24 max-w-6xl">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-          <h1 className="text-3xl font-bold mb-4">Your Messages</h1>
+          <h1 className="text-3xl font-bold mb-4 text-center">Your Messages</h1>
           <div className="space-y-4">
             {messages.length === 0 ? (
               <p>You have no messages</p>
             ) : (
               messages.map((message) => (
-                <h3 key={message._id}>{message.name}</h3>
+                <MessageCard key={message._id} message={message} />
               ))
             )}
           </div>

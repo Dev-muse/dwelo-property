@@ -11,7 +11,6 @@ const PropertyContactForm = ({ Property }) => {
   const { data: session } = useSession();
 
   const [state, formAction] = useFormState(addMessage, {});
-  let wasSubmitted = false;
   useEffect(() => {
     if (state.error) {
       toast.error(state.error);
@@ -21,9 +20,6 @@ const PropertyContactForm = ({ Property }) => {
     }
   }, [state]);
 
-  if (state.submitted) {
-    wasSubmitted = true;
-  }
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h3 className="text-xl font-bold mb-6 text-center">
@@ -33,7 +29,7 @@ const PropertyContactForm = ({ Property }) => {
         <p className="text-center text-red-600">
           Need to be logged in to message owner
         </p>
-      ) : wasSubmitted ? (
+      ) : state.submitted ? (
         <p className="text-green-600 text-lg text-center font-medium">
           Message Sent!
         </p>
@@ -110,6 +106,7 @@ const PropertyContactForm = ({ Property }) => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline"
                 id="body"
                 name="body"
+                required
                 placeholder="Enter your message"
               />
             </div>
