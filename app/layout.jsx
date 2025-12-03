@@ -3,6 +3,7 @@ import AuthProvider from "@/components/AuthProvider";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import Navbar from "@/components/Navbar";
+import GlobalProvider from "@/context/Globalcontext";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,14 +20,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <AuthProvider>
-      <html lang="en">
-        <body className={`${inter.className}`}>
-          <Nav />
-          <main>{children}</main>
-          <Footer />
-          <ToastContainer />
-        </body>
-      </html>
+      <GlobalProvider>
+        <html lang="en">
+          <body className={`${inter.className}`}>
+            <Nav />
+            <main>{children}</main>
+            <Footer />
+            <ToastContainer />
+          </body>
+        </html>
+      </GlobalProvider>
     </AuthProvider>
   );
 }
