@@ -2,11 +2,13 @@ import "@/assets/styles/globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import Navbar from "@/components/Navbar";
 import GlobalProvider from "@/context/Globalcontext";
 import { Inter } from "next/font/google";
+import "photoswipe/dist/photoswipe.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import 'photoswipe/dist/photoswipe.css';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
