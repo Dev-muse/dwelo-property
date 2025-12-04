@@ -23,7 +23,9 @@ const PropertyCard = ({ property }) => {
 
   return (
     <div className="rounded-xl shadow-md relative">
-      <PropertyCardImage propertyImages={images} />
+      <Link href={`/properties/${_id}`}>
+        <PropertyCardImage propertyImages={images} />
+      </Link>
       <div className="p-4">
         <div className="text-left md:text-center lg:text-left mb-6">
           <div className="text-gray-600">{type}</div>
